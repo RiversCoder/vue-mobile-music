@@ -4,7 +4,7 @@
           <li v-for="group in data" class="list-group" ref="listgroup">
               <h2 class="list-group-title">{{group.title}}</h2>
               <ul>
-                  <li v-for="(item,index) in group.items" class="list-group-item">
+                  <li v-for="(item,index) in group.items" class="list-group-item" @click="selectItem(item)">
                       <img class="avatar" v-lazy="item.cover" />
                       <span class="name">{{item.name}}</span>
                   </li>
@@ -24,6 +24,10 @@
           <h1 class="fixed-title">{{fixedTitle}}</h1>
       </div>
 
+       <div class="loading-container" v-show="isloading">
+         <loading></loading>
+      </div>
+
    </scroll>
 </template>
 
@@ -31,7 +35,7 @@
     
     import Scroll from '@/base/scroll/scroll'
     import { getsetData } from '@/common/js/dom'
-
+    import Loading from '@/base/loading/loading'
     //每个锚点的高度 根据css
     const ANCHOR_HEIGHT = 18
 
@@ -40,7 +44,8 @@
         return{
           scrollY: -1,   //向上( Y轴 )滚动隐藏的部分的高度
           currentIndex: 0,  //当前所到的列表组索引
-          diff: -1    
+          diff: -1,
+          isloading: true    
         }
       },
       created(){
@@ -105,8 +110,12 @@
               iHeight += lists[i].clientHeight
               this.listHeight.push(iHeight)
           }
-
-          console.log(this.listHeight)
+          this.isloading = false;
+          //console.log(this.listHeight)
+        },
+        //点击歌手列表项，派发事件
+        selectItem(item){
+            this.$emit('select',item)
         }
       },
       watch:{
@@ -173,7 +182,8 @@
         }
       },
       components:{
-        Scroll
+        Scroll,
+        Loading
       }
     }
 

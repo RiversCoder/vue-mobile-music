@@ -1,6 +1,7 @@
 <template>
   <div class="singer" ref="singer">
-  	<list-view :data="singers"></list-view>
+  	<list-view :data="singers" @select="selectItem"></list-view>
+  	<router-view></router-view>
   </div>
 </template>
 
@@ -10,7 +11,10 @@
 	import ListView from '@/base/listview/listview'
 	import { getSingerList } from '@/api/singer'
 	import { Singer } from '@/common/js/singer'
-	
+	import {mapMutations} from 'vuex'
+
+
+	//console.log(mapMutations)
 	const HOT_NAME = '热门'
 	const HOT_LEN = 10
 	
@@ -38,12 +42,11 @@
 
 					//重新组合所需要的数据结构和数据内容
 					this.singers = this._innitialHotSingers(this.singers)
-					console.log(this.singers)
+					//console.log(this.singers)
 				});
 			},
 			_innitialHotSingers(list){
-
-
+				
 				/*
 					* 这里用到了用类来封装公共数据对象
 				*/
@@ -83,8 +86,7 @@
 
 
 				})
-
-				
+			
 
 				//对获取的数据根据设计图进行排序处理
 				let hot = [];
@@ -103,7 +105,17 @@
 				ret.sort((a,b)=>( a.title.charCodeAt(0) - b.title.charCodeAt(0) ))
 
 				return hot.concat(ret);
-			}
+			},
+			selectItem(item){
+				this.$router.push({
+					path: '/singer/'+item.id
+				})
+				//console.log(this.$router)
+				this.setSinger(item)
+			},
+			...mapMutations({
+				setSinger: 'SET_SINGER'
+			})
 		},
 		components:{
 			ListView

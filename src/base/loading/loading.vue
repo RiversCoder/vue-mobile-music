@@ -7,7 +7,6 @@
 
 <script>
 	export default {
-		name : 'loading',
 		props:{
 			title : {
 				type: String,

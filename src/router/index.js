@@ -11,6 +11,12 @@ const Singer = (resolve) => {
   })
 }
 
+const SingerDetail = (resolve) => {
+  import('components/singer-detail/singer-detail').then((module) => {
+    resolve(module)
+  })
+}
+
 const Search = (resolve) => {
   import('components/search/search').then((module) => {
     resolve(module)
@@ -34,7 +40,7 @@ const Rank = (resolve) => {
 export default new Router({
   routes: [
     { path: '/',redirect:'/recommend'},
-    { path: '/singer',component:Singer},
+    { path: '/singer',component:Singer,children:[{path:':id',component:SingerDetail}]},
     { path: '/rank',component:Rank},
     { path: '/recommend',component:Recommend},
     { path: '/search',component:Search}

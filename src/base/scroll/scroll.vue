@@ -26,7 +26,7 @@
 			},
 			data: {
 				type: Array,
-				defalut: []
+				default: null
 			},
 			listenScroll:{
 				type: Boolean,
@@ -54,7 +54,7 @@
 				//监听滚动事件
 				if(this.listenScroll){
 					let This = this;
-					this.scroll.on('scroll',(pos)=>{
+					This.scroll.on('scroll',(pos)=>{
 						This.$emit('scroll',pos)
 					}) 
 				}
